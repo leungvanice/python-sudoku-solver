@@ -1,15 +1,3 @@
-# board = [
-#     [5, 3, 0, 0, 7, 0, 0, 0, 0],
-#     [6, 0, 0, 1, 9, 5, 0, 0, 0],
-#     [0, 9, 8, 0, 0, 0, 0, 6, 0],
-#     [8, 0, 0, 0, 6, 0, 0, 0, 3],
-#     [4, 0, 0, 8, 0, 3, 0, 0, 1],
-#     [7, 0, 0, 0, 2, 0, 0, 0, 6],
-#     [0, 6, 0, 0, 0, 0, 2, 8, 0],
-#     [0, 0, 0, 4, 1, 9, 0, 0, 5],
-#     [0, 0, 0, 0, 8, 0, 0, 7, 9],
-# ]
-
 board = [
     [3, 0, 0, 8, 0, 1, 0, 0, 2],
     [2, 0, 1, 0, 3, 0, 6, 0, 4],
@@ -35,9 +23,7 @@ def print_board(board):
             print('------ ------- ------')
 
 
-# print_board(board)
-
-def find_empty(board):
+def find_emptyList(board):
     emptyList = []
     for row in range(len(board)):
         for i in range(len(board[row])):
@@ -46,10 +32,17 @@ def find_empty(board):
                 emptyList.append(pos)
     return emptyList
 
-# print(find_empty(board))
+
+def find_empty(board):
+    for row in range(len(board)):
+        for i in range(len(board[row])):
+            if (board[row][i]) == 0:
+                pos = (row, i)
+
+                return pos
 
 
-def check_valid(board, pos, insertNum):
+def check_valid(board, insertNum, pos):
     def getColList(board, colNum):
         col = []
         for r in board:
@@ -85,5 +78,25 @@ def check_valid(board, pos, insertNum):
         return True
 
 
-# result = check_valid(board, (0, 1), 8)
-# print(result)
+def solve(board):
+    find = find_empty(board)
+    if not find:
+        return True
+    else:
+        row = find[0]
+        col = find[1]
+
+        for i in range(1, 10):
+            if check_valid(board, i, (row, col)):
+                board[row][col] = i
+
+                if solve(board):
+                    return True
+                else:
+                    board[row][col] = 0
+
+    return False
+
+
+solve(board)
+print_board(board)
